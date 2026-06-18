@@ -8,6 +8,19 @@
     width: 100%;
     border-radius: 100px;
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.input:hover {
+    border-color: #0F4C81;
+    box-shadow: 0 6px 12px 0 rgba(15, 76, 129, 0.2);
+}
+
+.input:focus {
+    outline: none;
+    border-color: #1D6FA3;
+    box-shadow: 0 6px 15px 0 rgba(29, 111, 163, 0.3);
 }
 
 .input::placeholder {
