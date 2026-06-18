@@ -38,8 +38,8 @@ export function Login() {
         <form onSubmit={handleSubmit}>
           <div className="pb-4">
             <Input
-              label="Email"
-              placeholder="Digite seu email..."
+              // label="Email"
+              placeholder="E-mail"
               type="email"
               required
               value={email}
@@ -48,8 +48,8 @@ export function Login() {
           </div>
           <div className="pb-4">
             <Input
-              label="Senha"
-              placeholder="Digite sua senha..."
+              // label="Senha"
+              placeholder="Senha"
               type="password"
               required
               value={senha}

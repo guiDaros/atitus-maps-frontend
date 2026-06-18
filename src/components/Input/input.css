@@ -9,3 +9,9 @@
     border-radius: 100px;
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
 }
+
+.input::placeholder {
+    color: rgba(29, 111, 163, 0.70);
+    opacity: 1;
+    font-weight: bold;
+}
