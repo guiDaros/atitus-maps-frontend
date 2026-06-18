@@ -3,6 +3,7 @@ import { Navbar, Logo, Title, Input, Button } from "../components";
 import { signIn } from "../services/authService";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import "./login.css";
 
 export function Login() {
   const [email, setEmail] = useState("");
@@ -24,7 +25,7 @@ export function Login() {
   };
 
   return (
-    <>
+    <div className="login-page">
       <div className="max-w-md mx-auto p-4">
         <div className="text-center">
           <Logo />
@@ -71,6 +72,6 @@ export function Login() {
           </Link>
         </div>
       </div>
-    </>
+    </div>
   );
 }

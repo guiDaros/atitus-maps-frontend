@@ -1,0 +1,28 @@
+.login-page {
+    position: relative;
+    min-height: 100vh;
+    background-image: url("../assets/Backgrounds/Background_lavaja.avif");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-page::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(25, 45, 85, 0.7);
+    pointer-events: none;
+}
+
+.login-page > div {
+    position: relative;
+    z-index: 1;
+}
