@@ -63,12 +63,10 @@ export function Login() {
           </div>
         </form>
 
-        <div className="text-center pt-8">
-          <Link
-            to="/register"
-            className="text-blue-600 hover:underline"
-          >
-            Faça seu cadastro
+        <div className="text-center pt-8 register-row">
+          <span className="register-text">Ainda não tem uma conta?</span>
+          <Link to="/register" className="register-link">
+            Criar Conta
           </Link>
         </div>
       </div>

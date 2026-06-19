@@ -27,3 +27,29 @@
     z-index: 1;
 }
 
+.register-row {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.register-text {
+    color: #ffffff;
+    font-size: 14px;
+}
+
+.register-link {
+    color: #4ea7ff;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.register-link:hover {
+    text-decoration: underline;
+}
+
