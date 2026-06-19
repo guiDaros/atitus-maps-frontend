@@ -89,9 +89,10 @@ export function Register() {
                     </div>
                 </form>
 
-                <div className="text-center pt-8">
-                    <Link to="/login" className="text-blue-600 hover:underline">
-                        Já tem cadastro? <strong>Faça Login</strong>
+                <div className="text-center pt-8 register-row">
+                    <span className="register-text">Já tem cadastro?</span>
+                    <Link to="/login" className="register-link">
+                        Fazer Login
                     </Link>
                 </div>
             </div>
