@@ -1,5 +1,5 @@
-import { useEffect, useContext, useState } from "react";
-import { Navbar } from "../components";
+import { useEffect, useState } from "react";
+import Header from "../components/Header/Header.jsx";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import { getPoints, postPoint } from '../services/mapService';
 import { useAuth } from "../contexts/AuthContext";
@@ -67,8 +67,9 @@ export const Map = () => {
 
   return (
     <>
-      <Navbar />
-      <div style={{ width: "100%", height: "100%" }}>
+      <Header isMapScreen />
+
+      <div style={{ width: "100%", height: "100vh" }}>
         {isLoaded ? (
           <GoogleMap
             mapContainerStyle={containerStyle}
