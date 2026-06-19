@@ -2,17 +2,25 @@ import React, { useState } from "react";
 import { Navbar, Logo, Title, Input, Button } from "../components";
 import { Link, useNavigate } from "react-router-dom";
 import { signUp } from "../services/authService";
+import "./login.css";
 
 export function Register() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
+    const [confirmSenha, setConfirmSenha] = useState("");
     const [erro, setErro] = useState("");
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErro("");
+
+        if (senha !== confirmSenha) {
+            setErro("As senhas não coincidem.");
+            return;
+        }
+
         try {
             await signUp(name, email, senha);
             navigate("/login");
@@ -22,7 +30,7 @@ export function Register() {
     };
 
     return (
-        <>
+        <div className="login-page">
             <div className="max-w-md mx-auto p-4">
                 <div className="text-center">
                     <Logo />
@@ -35,7 +43,7 @@ export function Register() {
                 <form onSubmit={handleSubmit}>
                     <div className="pb-4">
                         <Input
-                            label="Nome"
+                            // label="Nome"
                             placeholder="Digite seu nome..."
                             type="text"
                             required
@@ -45,7 +53,7 @@ export function Register() {
                     </div>
                     <div className="pb-4">
                         <Input
-                            label="Email"
+                            // label="Email"
                             placeholder="Digite seu email..."
                             type="email"
                             required
@@ -55,12 +63,22 @@ export function Register() {
                     </div>
                     <div className="pb-4">
                         <Input
-                            label="Senha"
+                            // label="Senha"
                             placeholder="Digite sua senha..."
                             type="password"
                             required
                             value={senha}
                             onChange={e => setSenha(e.target.value)}
+                        />
+                    </div>
+                    <div className="pb-4">
+                        <Input
+                            // label="Confirmar senha"
+                            placeholder="Confirme sua senha..."
+                            type="password"
+                            required
+                            value={confirmSenha}
+                            onChange={e => setConfirmSenha(e.target.value)}
                         />
                     </div>
 
@@ -77,6 +95,6 @@ export function Register() {
                     </Link>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
