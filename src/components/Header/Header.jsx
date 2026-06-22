@@ -1,4 +1,5 @@
 import React from 'react';
+import { useAuth } from '../../contexts/AuthContext';
 import {
   HeaderContainer,
   GreetingSection,
@@ -11,11 +12,14 @@ import {
 import { FaArrowLeft, FaMap, FaCog } from 'react-icons/fa';
 
 const Header = ({ isMapScreen = false }) => {
+  const { userName } = useAuth();
+  const firstName = userName ? userName.split(' ')[0] : 'Usuário';
+
   return (
     <HeaderContainer isMapScreen={isMapScreen}>
       <GreetingSection>
         <div>
-          <GreetingTitle>Olá, João!</GreetingTitle>
+          <GreetingTitle>{`Olá, ${firstName}!`}</GreetingTitle>
           <GreetingSubtitle>
             Seu carro merece um cuidado especial.
           </GreetingSubtitle>

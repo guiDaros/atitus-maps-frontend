@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Navbar, Logo, Title, Input, Button } from "../components";
 import { Link, useNavigate } from "react-router-dom";
 import { signUp } from "../services/authService";
+import { useAuth } from "../contexts/AuthContext";
 import "./login.css";
 
 export function Register() {
@@ -11,6 +12,7 @@ export function Register() {
     const [confirmSenha, setConfirmSenha] = useState("");
     const [feedback, setFeedback] = useState({ type: "", text: "" });
     const navigate = useNavigate();
+    const { setUserName } = useAuth();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -22,8 +24,17 @@ export function Register() {
         }
 
         try {
-            await signUp(name, email, senha);
-            navigate("/login");
+            const user = await signUp(name, email, senha);
+            // salva nome no contexto / localStorage
+            try { setUserName(user?.name || name); } catch (e) {}
+            // mostrar mensagem de sucesso e redirecionar após 2 segundos
+            setFeedback({ type: "success", text: "Conta criada com sucesso! Redirecionando..." });
+            // limpar formulário
+            setName("");
+            setEmail("");
+            setSenha("");
+            setConfirmSenha("");
+            setTimeout(() => navigate("/login"), 2000);
         } catch (err) {
             setFeedback({ type: "error", text: err.message });
         }
