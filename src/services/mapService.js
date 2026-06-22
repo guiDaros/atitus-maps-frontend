@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://two025-01-apisample.onrender.com/ws/point';
+const BASE_URL = 'https://atitus-maps-backend.onrender.com/ws/point';
 
 export async function getPoints(token) {
   try {

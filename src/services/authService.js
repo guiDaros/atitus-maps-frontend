@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://two025-01-apisample.onrender.com/auth';
+const API_URL = 'https://atitus-maps-backend.onrender.com/auth';
 
 export async function signIn(email, password) {
   try {
