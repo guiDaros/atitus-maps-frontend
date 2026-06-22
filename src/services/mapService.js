@@ -3,6 +3,14 @@ import axios from 'axios';
 const API_BASE = 'https://atitus-maps-backend.onrender.com';
 const BASE_URL = `${API_BASE}/ws/point`;
 
+function getApiErrorMessage(error, fallback) {
+  const data = error.response?.data;
+  if (typeof data === 'string' && data.trim()) {
+    return data;
+  }
+  return data?.message || fallback;
+}
+
 export async function getPoints(token) {
   try {
     const response = await axios.get(BASE_URL, {
@@ -26,7 +34,7 @@ export async function getPoints(token) {
       throw new Error('Erro ao buscar pontos');
     }
   } catch (error) {
-    throw new Error(error.response?.data?.message || 'Erro ao buscar pontos');
+    throw new Error(getApiErrorMessage(error, 'Erro ao buscar pontos'));
   }
 }
 
@@ -44,7 +52,7 @@ export async function postPoint(token, pointData) {
       throw new Error('Erro ao cadastrar ponto');
     }
   } catch (error) {
-    throw new Error(error.response?.data?.message || 'Erro ao cadastrar ponto');
+    throw new Error(getApiErrorMessage(error, 'Erro ao cadastrar ponto'));
   }
 }
 
@@ -62,7 +70,7 @@ export async function putPoint(token, pointId, pointData) {
       throw new Error('Erro ao atualizar ponto');
     }
   } catch (error) {
-    throw new Error(error.response?.data?.message || 'Erro ao atualizar ponto');
+    throw new Error(getApiErrorMessage(error, 'Erro ao atualizar ponto'));
   }
 }
 
@@ -80,6 +88,6 @@ export async function deletePoint(token, pointId) {
       throw new Error('Erro ao excluir ponto');
     }
   } catch (error) {
-    throw new Error(error.response?.data?.message || 'Erro ao excluir ponto');
+    throw new Error(getApiErrorMessage(error, 'Erro ao excluir ponto'));
   }
 }
