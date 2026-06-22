@@ -9,15 +9,15 @@ export function Register() {
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
     const [confirmSenha, setConfirmSenha] = useState("");
-    const [erro, setErro] = useState("");
+    const [feedback, setFeedback] = useState({ type: "", text: "" });
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setErro("");
+        setFeedback({ type: "", text: "" });
 
         if (senha !== confirmSenha) {
-            setErro("As senhas não coincidem.");
+            setFeedback({ type: "error", text: "As senhas não coincidem." });
             return;
         }
 
@@ -25,7 +25,7 @@ export function Register() {
             await signUp(name, email, senha);
             navigate("/login");
         } catch (err) {
-            setErro(err.message);
+            setFeedback({ type: "error", text: err.message });
         }
     };
 
@@ -82,7 +82,11 @@ export function Register() {
                         />
                     </div>
 
-                    {erro && <p style={{ color: "red" }}>{erro}</p>}
+                    {feedback.text && (
+                        <p className={`feedback-message ${feedback.type}`}>
+                            {feedback.text}
+                        </p>
+                    )}
 
                     <div className="text-center pt-4">
                         <Button type="submit">Cadastrar</Button>

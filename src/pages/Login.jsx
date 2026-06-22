@@ -8,19 +8,19 @@ import "./login.css";
 export function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
-  const [erro, setErro] = useState("");
+  const [feedback, setFeedback] = useState({ type: "", text: "" });
   const navigate = useNavigate();
   const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErro("");
+    setFeedback({ type: "", text: "" });
     try {
       const token = await signIn(email, senha);
       login(token);
       navigate("/map");
     } catch (err) {
-      setErro(err.message);
+      setFeedback({ type: "error", text: err.message });
     }
   };
 
@@ -56,7 +56,11 @@ export function Login() {
               onChange={(e) => setSenha(e.target.value)}
             />
           </div>
-          {erro && <p style={{ color: "red" }}>{erro}</p>}
+          {feedback.text && (
+            <p className={`feedback-message ${feedback.type}`}>
+              {feedback.text}
+            </p>
+          )}
 
           <div className="text-center pt-4">
             <Button type="submit">Acessar</Button>
