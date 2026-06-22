@@ -44,13 +44,13 @@ export const Map = () => {
     const newPoint = {
       latitude: lat,
       longitude: lng,
-      descricao: "Descrição do ponto",
+      description: "Descrição do ponto",
     };
     try {
       const savedPoint = await postPoint(token, newPoint);
       const savedMarker = {
         id: savedPoint.id,
-        title: savedPoint.descricao || "Novo Ponto",
+        title: savedPoint.description || "Novo Ponto",
         position: {
           lat: savedPoint.latitude,
           lng: savedPoint.longitude,
@@ -70,14 +70,14 @@ export const Map = () => {
 
     try {
       const updatedPoint = await putPoint(token, marker.id, {
-        descricao: newDescription,
+        description: newDescription,
         latitude: marker.position.lat,
         longitude: marker.position.lng,
       });
 
       setMarkers((prev) => prev.map((item) => item.id === marker.id ? {
         ...item,
-        title: updatedPoint.descricao || newDescription,
+        title: updatedPoint.description || newDescription,
       } : item));
     } catch (error) {
       alert(error.message);
