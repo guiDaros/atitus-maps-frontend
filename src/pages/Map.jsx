@@ -154,7 +154,7 @@ export const Map = () => {
             />
             <div className="modal-actions">
               <Button onClick={handleAddDescription}>Adicionar</Button>
-              <button className="button" onClick={() => { setModalVisible(false); setPendingPoint(null); }}>Cancelar</button>
+              <Button onClick={() => { setModalVisible(false); setPendingPoint(null); }}>Cancelar</Button>
             </div>
           </div>
         </div>
