@@ -3,6 +3,8 @@ import Header from "../components/Header/Header.jsx";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import { getPoints, postPoint, putPoint, deletePoint } from '../services/mapService';
 import { useAuth } from "../contexts/AuthContext";
+import { Button } from '../components';
+import './map.css';
 
 const containerStyle = {
   width: "100%",
@@ -19,6 +21,9 @@ const center = {
 export const Map = () => {
   const { token } = useAuth();
   const [markers, setMarkers] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [pendingPoint, setPendingPoint] = useState(null);
+  const [descriptionText, setDescriptionText] = useState("");
   
   // Substitua pela sua chave da API do Google Maps
   const { isLoaded } = useJsApiLoader({
@@ -39,15 +44,23 @@ export const Map = () => {
 
   // Função para adicionar ponto ao clicar no mapa
   const handleMapClick = async (event) => {
+    // open modal to ask for description
     const lat = event.latLng.lat();
     const lng = event.latLng.lng();
-    const newPoint = {
-      latitude: lat,
-      longitude: lng,
-      description: "Descrição do ponto",
+    setPendingPoint({ latitude: lat, longitude: lng });
+    setDescriptionText("");
+    setModalVisible(true);
+  };
+
+  const handleAddDescription = async () => {
+    if (!pendingPoint) return;
+    const pointData = {
+      latitude: pendingPoint.latitude,
+      longitude: pendingPoint.longitude,
+      description: descriptionText || "",
     };
     try {
-      const savedPoint = await postPoint(token, newPoint);
+      const savedPoint = await postPoint(token, pointData);
       const savedMarker = {
         id: savedPoint.id,
         title: savedPoint.description || "Novo Ponto",
@@ -57,10 +70,13 @@ export const Map = () => {
         },
       };
       setMarkers((prev) => [...prev, savedMarker]);
+      setModalVisible(false);
+      setPendingPoint(null);
     } catch (error) {
       alert(error.message);
     }
   };
+
 
   const handleMarkerClick = async (marker) => {
     const newDescription = window.prompt("Editar descrição do ponto:", marker.title);
@@ -115,6 +131,8 @@ export const Map = () => {
                 key={marker.id}
                 position={marker.position}
                 title={marker.title}
+                onClick={() => handleMarkerClick(marker)}
+                onRightClick={() => handleMarkerRightClick(marker)}
               />
             ))}
           </GoogleMap>
@@ -122,6 +140,25 @@ export const Map = () => {
           <div>Carregando mapa...</div>
         )}
       </div>
+      {modalVisible && (
+        <div className="modal-overlay">
+          <div className="modal-box">
+            <h3 className="modal-title">Descrição do ponto</h3>
+            <p className="modal-sub">Adicione uma descrição (máx. 100 caracteres)</p>
+            <textarea
+              className="modal-textarea"
+              maxLength={100}
+              value={descriptionText}
+              onChange={(e) => setDescriptionText(e.target.value)}
+              placeholder="Digite a descrição..."
+            />
+            <div className="modal-actions">
+              <Button onClick={handleAddDescription}>Adicionar</Button>
+              <button className="button" onClick={() => { setModalVisible(false); setPendingPoint(null); }}>Cancelar</button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
