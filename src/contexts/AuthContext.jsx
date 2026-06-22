@@ -11,16 +11,16 @@ export function useAuth() {
 // Provider do contexto
 export function AuthProvider({ children }) {
   const [token, setToken] = useState(() => {
-    // Busca token do sessionStorage ao iniciar
-    return sessionStorage.getItem("token") || null;
+    // Busca token do localStorage ao iniciar
+    return localStorage.getItem("token") || null;
   });
 
-  // Salva no sessionStorage sempre que token mudar
+  // Salva no localStorage sempre que token mudar
   useEffect(() => {
     if (token) {
-      sessionStorage.setItem("token", token);
+      localStorage.setItem("token", token);
     } else {
-      sessionStorage.removeItem("token");
+      localStorage.removeItem("token");
     }
   }, [token]);
 
