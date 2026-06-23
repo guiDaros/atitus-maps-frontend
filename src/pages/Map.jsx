@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import Header from "../components/Header/Header.jsx";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import { getPoints, postPoint, putPoint, deletePoint } from '../services/mapService';
@@ -19,11 +20,20 @@ const center = {
 };
 
 export const Map = () => {
-  const { token } = useAuth();
+  const navigate = useNavigate();
+  const { token, userName, logout } = useAuth();
   const [markers, setMarkers] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [pendingPoint, setPendingPoint] = useState(null);
   const [descriptionText, setDescriptionText] = useState("");
+  const [settingsOpen, setSettingsOpen] = useState(false);
+
+  const handleSettingsClick = () => setSettingsOpen(true);
+  const handleCloseSettings = () => setSettingsOpen(false);
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
   
   // Substitua pela sua chave da API do Google Maps
   const { isLoaded } = useJsApiLoader({
@@ -116,7 +126,7 @@ export const Map = () => {
 
   return (
     <>
-      <Header isMapScreen />
+      <Header isMapScreen onSettingsClick={handleSettingsClick} />
 
       <div style={{ width: "100%", height: "100vh" }}>
         {isLoaded ? (
@@ -155,6 +165,37 @@ export const Map = () => {
             <div className="modal-actions">
               <Button onClick={handleAddDescription}>Adicionar</Button>
               <Button onClick={() => { setModalVisible(false); setPendingPoint(null); }}>Cancelar</Button>
+            </div>
+          </div>
+        </div>
+      )}
+      {settingsOpen && (
+        <div className="settings-overlay" onClick={handleCloseSettings}>
+          <div className="settings-panel" onClick={(e) => e.stopPropagation()}>
+            <div className="settings-header">
+              <h3>Minha conta</h3>
+              <button
+                className="settings-close"
+                type="button"
+                onClick={handleCloseSettings}
+                aria-label="Fechar configurações"
+              >
+                ×
+              </button>
+            </div>
+
+            <div className="settings-field">
+              <span className="settings-label">Nome</span>
+              <strong>{userName || 'Usuário'}</strong>
+            </div>
+
+            <div className="settings-field">
+              <span className="settings-label">Status</span>
+              <span>Autenticado</span>
+            </div>
+
+            <div className="settings-actions">
+              <Button type="button" onClick={handleLogout}>Sair</Button>
             </div>
           </div>
         </div>

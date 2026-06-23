@@ -8,10 +8,11 @@ import {
   IconGroup,
   BackButton,
   BackText,
+  IconButton,
 } from './Header.styles';
 import { FaArrowLeft, FaMap, FaCog } from 'react-icons/fa';
 
-const Header = ({ isMapScreen = false }) => {
+const Header = ({ isMapScreen = false, onSettingsClick }) => {
   const { userName } = useAuth();
   const firstName = userName ? userName.split(' ')[0] : 'Usuário';
 
@@ -26,8 +27,16 @@ const Header = ({ isMapScreen = false }) => {
         </div>
 
         <IconGroup aria-label="Atalhos do cabeçalho">
-          <FaMap />
-          <FaCog />
+          <IconButton type="button" aria-label="Ir para o mapa">
+            <FaMap />
+          </IconButton>
+          <IconButton
+            type="button"
+            aria-label="Abrir configurações"
+            onClick={onSettingsClick}
+          >
+            <FaCog />
+          </IconButton>
         </IconGroup>
       </GreetingSection>
 
