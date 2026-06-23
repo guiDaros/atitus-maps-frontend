@@ -48,7 +48,7 @@ export function Register() {
                 </div>
 
                 <div className="pt-6 pb-4">
-                    <Title title="Bem-vindo de volta" />
+                    <Title title="Comece a cuidar do seu veículo" />
                 </div>
 
                 <form onSubmit={handleSubmit}>
