@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Navbar, Logo, Title, Input, Button } from "../components";
 import { signIn } from "../services/authService";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,19 +8,46 @@ import "./login.css";
 export function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
-  const [feedback, setFeedback] = useState({ type: "", text: "" });
+  const [loading, setLoading] = useState(false);
+  const [feedback, setFeedback] = useState({ type: "", text: "", visible: false });
+  const feedbackTimer = useRef(null);
   const navigate = useNavigate();
   const { login } = useAuth();
 
+  useEffect(() => {
+    return () => {
+      if (feedbackTimer.current) {
+        clearTimeout(feedbackTimer.current);
+      }
+    };
+  }, []);
+
+  const showFeedback = (type, text, autoHide = true) => {
+    if (feedbackTimer.current) {
+      clearTimeout(feedbackTimer.current);
+    }
+    setFeedback({ type, text, visible: true });
+    if (autoHide) {
+      feedbackTimer.current = setTimeout(() => {
+        setFeedback((prev) => ({ ...prev, visible: false }));
+      }, 3800);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setFeedback({ type: "", text: "" });
+    setLoading(true);
+    showFeedback("", "", false);
+
     try {
       const token = await signIn(email, senha);
       login(token);
-      navigate("/map");
+      showFeedback("success", "Login realizado com sucesso!", false);
+      setTimeout(() => navigate("/map"), 1200);
     } catch (err) {
-      setFeedback({ type: "error", text: err.message });
+      showFeedback("error", err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -45,6 +72,7 @@ export function Login() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                disabled={loading}
               />
             </div>
             <div className="pb-4">
@@ -55,18 +83,30 @@ export function Login() {
                 required
                 value={senha}
                 onChange={(e) => setSenha(e.target.value)}
+                disabled={loading}
               />
             </div>
-            {feedback.text && (
-              <p className={`feedback-message ${feedback.type}`}>
+
+            <div className="text-center pt-4">
+              <Button type="submit" disabled={loading}>
+                {loading ? "Entrando..." : "Acessar"}
+              </Button>
+            </div>
+          </form>
+
+          <div className="status-container">
+            {feedback.text && !loading && (
+              <p className={`feedback-message ${feedback.type} ${feedback.visible ? 'show' : ''}`}>
                 {feedback.text}
               </p>
             )}
-
-            <div className="text-center pt-4">
-              <Button type="submit">Acessar</Button>
-            </div>
-          </form>
+            {loading && (
+              <div className="loading-message">
+                <span className="spinner" />
+                <span>Entrando...</span>
+              </div>
+            )}
+          </div>
 
           <div className="text-center pt-8 register-row">
             <span className="register-text">Ainda não tem uma conta?</span>

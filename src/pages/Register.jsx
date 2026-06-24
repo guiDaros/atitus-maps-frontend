@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Navbar, Logo, Title, Input, Button } from "../components";
 import { Link, useNavigate } from "react-router-dom";
 import { signUp } from "../services/authService";
@@ -10,33 +10,56 @@ export function Register() {
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
     const [confirmSenha, setConfirmSenha] = useState("");
-    const [feedback, setFeedback] = useState({ type: "", text: "" });
+    const [loading, setLoading] = useState(false);
+    const [feedback, setFeedback] = useState({ type: "", text: "", visible: false });
+    const feedbackTimer = useRef(null);
     const navigate = useNavigate();
     const { setUserName } = useAuth();
 
+    useEffect(() => {
+        return () => {
+            if (feedbackTimer.current) {
+                clearTimeout(feedbackTimer.current);
+            }
+        };
+    }, []);
+
+    const showFeedback = (type, text, autoHide = true) => {
+        if (feedbackTimer.current) {
+            clearTimeout(feedbackTimer.current);
+        }
+        setFeedback({ type, text, visible: true });
+        if (autoHide) {
+            feedbackTimer.current = setTimeout(() => {
+                setFeedback((prev) => ({ ...prev, visible: false }));
+            }, 3800);
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setFeedback({ type: "", text: "" });
+        setLoading(true);
+        showFeedback("", "", false);
 
         if (senha !== confirmSenha) {
-            setFeedback({ type: "error", text: "As senhas não coincidem." });
+            setLoading(false);
+            showFeedback("error", "As senhas não coincidem.");
             return;
         }
 
         try {
             const user = await signUp(name, email, senha);
-            // salva nome no contexto / localStorage
             try { setUserName(user?.name || name); } catch (e) {}
-            // mostrar mensagem de sucesso e redirecionar após 2 segundos
-            setFeedback({ type: "success", text: "Conta criada com sucesso! Redirecionando..." });
-            // limpar formulário
             setName("");
             setEmail("");
             setSenha("");
             setConfirmSenha("");
+            showFeedback("success", "Conta criada com sucesso!", false);
             setTimeout(() => navigate("/login"), 2000);
         } catch (err) {
-            setFeedback({ type: "error", text: err.message });
+            showFeedback("error", err.message);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -61,6 +84,7 @@ export function Register() {
                                 required
                                 value={name}
                                 onChange={e => setName(e.target.value)}
+                                disabled={loading}
                             />
                         </div>
                         <div className="pb-4">
@@ -71,6 +95,7 @@ export function Register() {
                                 required
                                 value={email}
                                 onChange={e => setEmail(e.target.value)}
+                                disabled={loading}
                             />
                         </div>
                         <div className="pb-4">
@@ -81,6 +106,7 @@ export function Register() {
                                 required
                                 value={senha}
                                 onChange={e => setSenha(e.target.value)}
+                                disabled={loading}
                             />
                         </div>
                         <div className="pb-4">
@@ -91,19 +117,30 @@ export function Register() {
                                 required
                                 value={confirmSenha}
                                 onChange={e => setConfirmSenha(e.target.value)}
+                                disabled={loading}
                             />
                         </div>
 
-                        {feedback.text && (
-                            <p className={`feedback-message ${feedback.type}`}>
+                        <div className="text-center pt-4">
+                            <Button type="submit" disabled={loading}>
+                                {loading ? "Criando conta..." : "Cadastrar"}
+                            </Button>
+                        </div>
+                    </form>
+
+                    <div className="status-container">
+                        {feedback.text && !loading && (
+                            <p className={`feedback-message ${feedback.type} ${feedback.visible ? 'show' : ''}`}>
                                 {feedback.text}
                             </p>
                         )}
-
-                        <div className="text-center pt-4">
-                            <Button type="submit">Cadastrar</Button>
-                        </div>
-                    </form>
+                        {loading && (
+                            <div className="loading-message">
+                                <span className="spinner" />
+                                <span>Criando conta...</span>
+                            </div>
+                        )}
+                    </div>
 
                     <div className="text-center pt-8 register-row">
                         <span className="register-text">Já tem cadastro?</span>
