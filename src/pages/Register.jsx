@@ -42,73 +42,75 @@ export function Register() {
 
     return (
         <div className="login-page">
-            <div className="max-w-md mx-auto p-4">
-                <div className="text-center">
-                    <Logo />
-                </div>
-
-                <div className="pt-6 pb-4">
-                    <Title title="Comece a cuidar do seu veículo" />
-                </div>
-
-                <form onSubmit={handleSubmit}>
-                    <div className="pb-4">
-                        <Input
-                            // label="Nome"
-                            placeholder="Digite seu nome..."
-                            type="text"
-                            required
-                            value={name}
-                            onChange={e => setName(e.target.value)}
-                        />
-                    </div>
-                    <div className="pb-4">
-                        <Input
-                            // label="Email"
-                            placeholder="Digite seu email..."
-                            type="email"
-                            required
-                            value={email}
-                            onChange={e => setEmail(e.target.value)}
-                        />
-                    </div>
-                    <div className="pb-4">
-                        <Input
-                            // label="Senha"
-                            placeholder="Digite sua senha..."
-                            type="password"
-                            required
-                            value={senha}
-                            onChange={e => setSenha(e.target.value)}
-                        />
-                    </div>
-                    <div className="pb-4">
-                        <Input
-                            // label="Confirmar senha"
-                            placeholder="Confirme sua senha..."
-                            type="password"
-                            required
-                            value={confirmSenha}
-                            onChange={e => setConfirmSenha(e.target.value)}
-                        />
+            <div className="glass-card">
+                <div className="card-content">
+                    <div className="text-center">
+                        <Logo />
                     </div>
 
-                    {feedback.text && (
-                        <p className={`feedback-message ${feedback.type}`}>
-                            {feedback.text}
-                        </p>
-                    )}
-
-                    <div className="text-center pt-4">
-                        <Button type="submit">Cadastrar</Button>
+                    <div className="pt-6 pb-4">
+                        <Title title="Comece a cuidar do seu veículo" />
                     </div>
-                </form>
 
-                <div className="text-center pt-8 register-row">
-                    <span className="register-text">Já tem cadastro?</span>
-                    <Link to="/login" className="register-link">
-                        Fazer Login
-                    </Link>
+                    <form onSubmit={handleSubmit}>
+                        <div className="pb-4">
+                            <Input
+                                // label="Nome"
+                                placeholder="Digite seu nome..."
+                                type="text"
+                                required
+                                value={name}
+                                onChange={e => setName(e.target.value)}
+                            />
+                        </div>
+                        <div className="pb-4">
+                            <Input
+                                // label="Email"
+                                placeholder="Digite seu email..."
+                                type="email"
+                                required
+                                value={email}
+                                onChange={e => setEmail(e.target.value)}
+                            />
+                        </div>
+                        <div className="pb-4">
+                            <Input
+                                // label="Senha"
+                                placeholder="Digite sua senha..."
+                                type="password"
+                                required
+                                value={senha}
+                                onChange={e => setSenha(e.target.value)}
+                            />
+                        </div>
+                        <div className="pb-4">
+                            <Input
+                                // label="Confirmar senha"
+                                placeholder="Confirme sua senha..."
+                                type="password"
+                                required
+                                value={confirmSenha}
+                                onChange={e => setConfirmSenha(e.target.value)}
+                            />
+                        </div>
+
+                        {feedback.text && (
+                            <p className={`feedback-message ${feedback.type}`}>
+                                {feedback.text}
+                            </p>
+                        )}
+
+                        <div className="text-center pt-4">
+                            <Button type="submit">Cadastrar</Button>
+                        </div>
+                    </form>
+
+                    <div className="text-center pt-8 register-row">
+                        <span className="register-text">Já tem cadastro?</span>
+                        <Link to="/login" className="register-link">
+                            Fazer Login
+                        </Link>
+                    </div>
                 </div>
             </div>
         </div>

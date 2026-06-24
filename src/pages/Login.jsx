@@ -26,52 +26,54 @@ export function Login() {
 
   return (
     <div className="login-page">
-      <div className="max-w-md mx-auto p-4">
-        <div className="text-center">
-          <Logo />
-        </div>
-
-        <div className="pt-6 pb-4">
-          <Title title="Já possui uma conta?" />
-        </div>
-
-        <form onSubmit={handleSubmit}>
-          <div className="pb-4">
-            <Input
-              // label="Email"
-              placeholder="E-mail"
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+      <div className="glass-card">
+        <div className="card-content">
+          <div className="text-center">
+            <Logo />
           </div>
-          <div className="pb-4">
-            <Input
-              // label="Senha"
-              placeholder="Senha"
-              type="password"
-              required
-              value={senha}
-              onChange={(e) => setSenha(e.target.value)}
-            />
-          </div>
-          {feedback.text && (
-            <p className={`feedback-message ${feedback.type}`}>
-              {feedback.text}
-            </p>
-          )}
 
-          <div className="text-center pt-4">
-            <Button type="submit">Acessar</Button>
+          <div className="pt-6 pb-4">
+            <Title title="Já possui uma conta?" />
           </div>
-        </form>
 
-        <div className="text-center pt-8 register-row">
-          <span className="register-text">Ainda não tem uma conta?</span>
-          <Link to="/register" className="register-link">
-            Criar Conta
-          </Link>
+          <form onSubmit={handleSubmit}>
+            <div className="pb-4">
+              <Input
+                // label="Email"
+                placeholder="E-mail"
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div className="pb-4">
+              <Input
+                // label="Senha"
+                placeholder="Senha"
+                type="password"
+                required
+                value={senha}
+                onChange={(e) => setSenha(e.target.value)}
+              />
+            </div>
+            {feedback.text && (
+              <p className={`feedback-message ${feedback.type}`}>
+                {feedback.text}
+              </p>
+            )}
+
+            <div className="text-center pt-4">
+              <Button type="submit">Acessar</Button>
+            </div>
+          </form>
+
+          <div className="text-center pt-8 register-row">
+            <span className="register-text">Ainda não tem uma conta?</span>
+            <Link to="/register" className="register-link">
+              Criar Conta
+            </Link>
+          </div>
         </div>
       </div>
     </div>
