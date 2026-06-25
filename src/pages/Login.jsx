@@ -45,7 +45,7 @@ export function Login() {
       showFeedback("success", "Login realizado com sucesso!", false);
       setTimeout(() => navigate("/map"), 1200);
     } catch (err) {
-      showFeedback("error", err.message);
+      showFeedback("error", err.message, false);
     } finally {
       setLoading(false);
     }

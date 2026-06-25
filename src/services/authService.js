@@ -3,11 +3,40 @@ import axios from 'axios';
 const API_URL = 'https://atitus-maps-backend.onrender.com/auth';
 
 function getApiErrorMessage(error, fallback) {
-  const data = error.response?.data;
-  if (typeof data === 'string' && data.trim()) {
-    return data;
+  const response = error.response;
+  const data = response?.data;
+
+  if (!response) {
+    return 'Não foi possível conectar ao servidor. Verifique sua conexão.';
   }
-  return data?.message || fallback;
+
+  if (typeof data === 'string' && data.trim()) {
+    const message = data.trim();
+    if (message.toLowerCase().includes('bad credentials')) {
+      return 'E-mail ou senha incorretos.';
+    }
+    if (message.toLowerCase().includes('user already exists') || message.toLowerCase().includes('usuario ja cadastrado') || message.toLowerCase().includes('user exists')) {
+      return 'Usuário já cadastrado.';
+    }
+    return message;
+  }
+
+  const message = data?.message || data?.error || fallback;
+  if (typeof message === 'string') {
+    if (message.toLowerCase().includes('bad credentials')) {
+      return 'E-mail ou senha incorretos.';
+    }
+    if (message.toLowerCase().includes('user already exists') || message.toLowerCase().includes('usuario ja cadastrado') || message.toLowerCase().includes('user exists')) {
+      return 'Usuário já cadastrado.';
+    }
+    return message;
+  }
+
+  if (Array.isArray(data?.errors)) {
+    return data.errors.map((item) => item.message || item.msg || item).join(' ');
+  }
+
+  return fallback;
 }
 
 export async function signIn(email, password) {

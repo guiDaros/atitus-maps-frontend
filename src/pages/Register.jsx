@@ -57,7 +57,7 @@ export function Register() {
             showFeedback("success", "Conta criada com sucesso!", false);
             setTimeout(() => navigate("/login"), 2000);
         } catch (err) {
-            showFeedback("error", err.message);
+            showFeedback("error", err.message, false);
         } finally {
             setLoading(false);
         }
