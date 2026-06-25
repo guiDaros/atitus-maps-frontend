@@ -37,37 +37,64 @@ export function AuthProvider({ children }) {
     return null;
   }
 
+  function parseAuthResponse(authData) {
+    if (!authData) return { token: null, name: null };
+    if (typeof authData === 'string') return { token: authData, name: null };
+
+    return {
+      token:
+        authData.token ||
+        authData.accessToken ||
+        authData.jwt ||
+        authData.tokenJWT ||
+        null,
+      name:
+        authData.name ||
+        authData.fullName ||
+        authData.nome ||
+        authData.user?.name ||
+        authData.user?.fullName ||
+        authData.user?.nome ||
+        null,
+    };
+  }
+
   // Salva no localStorage sempre que token mudar
   useEffect(() => {
     if (token) {
-      localStorage.setItem("token", token);
+      localStorage.setItem('token', token);
       // se não tivermos userName, tente derivar do token
-      if (!localStorage.getItem("userName")) {
+      if (!localStorage.getItem('userName')) {
         const derived = deriveNameFromToken(token);
         if (derived) {
           setUserName(derived);
         }
       }
     } else {
-      localStorage.removeItem("token");
+      localStorage.removeItem('token');
     }
   }, [token]);
 
   // persiste userName
   useEffect(() => {
     if (userName) {
-      localStorage.setItem("userName", userName);
+      localStorage.setItem('userName', userName);
     } else {
-      localStorage.removeItem("userName");
+      localStorage.removeItem('userName');
     }
   }, [userName]);
 
   // Função para login
-  function login(newToken) {
-    setToken(newToken);
-    // tenta derivar nome imediatamente se não temos
-    if (!localStorage.getItem("userName")) {
-      const derived = deriveNameFromToken(newToken);
+  function login(authData) {
+    const { token: parsedToken, name: parsedName } = parseAuthResponse(authData);
+    if (!parsedToken) return;
+
+    setToken(parsedToken);
+
+    if (parsedName) {
+      setUserName(parsedName);
+    } else if (!localStorage.getItem('userName')) {
+      const derived = deriveNameFromToken(parsedToken);
       if (derived) setUserName(derived);
     }
   }

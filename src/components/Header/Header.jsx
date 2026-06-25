@@ -14,7 +14,7 @@ import { FaArrowLeft, FaMap, FaCog } from 'react-icons/fa';
 
 const Header = ({ isMapScreen = false, onSettingsClick }) => {
   const { userName } = useAuth();
-  const firstName = userName ? userName.split(' ')[0] : 'Usuário';
+  const firstName = userName?.trim().split(/\s+/)[0] || 'Usuário';
 
   return (
     <HeaderContainer isMapScreen={isMapScreen}>

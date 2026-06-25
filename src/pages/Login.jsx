@@ -40,8 +40,8 @@ export function Login() {
     showFeedback("", "", false);
 
     try {
-      const token = await signIn(email, senha);
-      login(token);
+      const authData = await signIn(email, senha);
+      login(authData);
       showFeedback("success", "Login realizado com sucesso!", false);
       setTimeout(() => navigate("/map"), 1200);
     } catch (err) {
