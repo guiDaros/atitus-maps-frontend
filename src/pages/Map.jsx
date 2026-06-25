@@ -29,9 +29,32 @@ export const Map = () => {
   const [pendingPoint, setPendingPoint] = useState(null);
   const [descriptionText, setDescriptionText] = useState("");
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [pointsListOpen, setPointsListOpen] = useState(false);
 
   const handleSettingsClick = () => setSettingsOpen(true);
   const handleCloseSettings = () => setSettingsOpen(false);
+  const handlePointsListClick = () => setPointsListOpen(true);
+  const handleClosePointsList = () => setPointsListOpen(false);
+  const handleMarkerCardEdit = (marker) => {
+    setPointsListOpen(false);
+    setEditPoint(marker);
+    setPendingPoint(null);
+    setDescriptionText(marker.title === 'Novo Ponto' ? '' : marker.title || '');
+    setModalVisible(true);
+  };
+
+  const handlePointDelete = async (marker) => {
+    const confirmed = window.confirm('Excluir este ponto?');
+    if (!confirmed) return;
+
+    try {
+      await deletePoint(token, marker.id);
+      setMarkers((prev) => prev.filter((item) => item.id !== marker.id));
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   const handleLogout = () => {
     logout();
     navigate('/login');
@@ -134,7 +157,11 @@ export const Map = () => {
 
   return (
     <>
-      <Header isMapScreen onSettingsClick={handleSettingsClick} />
+      <Header
+        isMapScreen
+        onSettingsClick={handleSettingsClick}
+        onPointsClick={handlePointsListClick}
+      />
 
       <div style={{ width: "100%", height: "100vh" }}>
         {isLoaded ? (
@@ -230,6 +257,52 @@ export const Map = () => {
 
             <div className="settings-actions">
               <Button type="button" onClick={handleLogout}>Sair</Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {pointsListOpen && (
+        <div className="points-list-overlay" onClick={handleClosePointsList}>
+          <div className="points-list-panel" onClick={(e) => e.stopPropagation()}>
+            <div className="points-list-header">
+              <div>
+                <h3>Meus pontos</h3>
+                <p className="points-list-subtitle">Veja os pontos cadastrados e edite ou exclua diretamente.</p>
+              </div>
+              <button
+                className="points-list-close"
+                type="button"
+                onClick={handleClosePointsList}
+                aria-label="Fechar lista de pontos"
+              >
+                ×
+              </button>
+            </div>
+
+            <div className="points-list-cards">
+              {markers.length === 0 ? (
+                <div className="points-list-empty">Nenhum ponto cadastrado ainda.</div>
+              ) : (
+                markers.map((marker) => (
+                  <div key={marker.id} className="points-list-card">
+                    <div className="points-list-card-meta">
+                      <span className="points-list-card-title">{marker.title || 'Sem descrição'}</span>
+                      <span className="points-list-card-coords">
+                        {marker.position.lat.toFixed(5)}, {marker.position.lng.toFixed(5)}
+                      </span>
+                    </div>
+                    <div className="points-list-card-actions">
+                      <Button type="button" onClick={() => handleMarkerCardEdit(marker)}>
+                        Editar
+                      </Button>
+                      <Button type="button" className="button-destructive" onClick={() => handlePointDelete(marker)}>
+                        Excluir
+                      </Button>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </div>

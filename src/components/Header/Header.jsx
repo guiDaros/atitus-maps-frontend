@@ -10,9 +10,9 @@ import {
   BackText,
   IconButton,
 } from './Header.styles';
-import { FaArrowLeft, FaMap, FaCog } from 'react-icons/fa';
+import { FaArrowLeft, FaMap, FaCog, FaListAlt } from 'react-icons/fa';
 
-const Header = ({ isMapScreen = false, onSettingsClick }) => {
+const Header = ({ isMapScreen = false, onSettingsClick, onPointsClick }) => {
   const { userName } = useAuth();
   const firstName = userName?.trim().split(/\s+/)[0] || 'Usuário';
 
@@ -27,6 +27,13 @@ const Header = ({ isMapScreen = false, onSettingsClick }) => {
         </div>
 
         <IconGroup aria-label="Atalhos do cabeçalho">
+          <IconButton
+            type="button"
+            aria-label="Listar pontos"
+            onClick={onPointsClick}
+          >
+            <FaListAlt />
+          </IconButton>
           <IconButton type="button" aria-label="Ir para o mapa">
             <FaMap />
           </IconButton>

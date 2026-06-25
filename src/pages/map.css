@@ -239,6 +239,154 @@
   flex-wrap: wrap;
 }
 
+.points-list-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(5, 10, 25, 0.72);
+  backdrop-filter: blur(10px);
+  z-index: 1200;
+  padding: 1rem;
+}
+
+.points-list-panel {
+  width: min(700px, 100%);
+  max-height: min(90vh, 820px);
+  overflow: hidden;
+  background: rgba(15, 23, 42, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(18px);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.points-list-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.points-list-header h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: #ffffff;
+}
+
+.points-list-subtitle {
+  margin: 0.35rem 0 0;
+  color: #cbd5e1;
+  font-size: 0.95rem;
+  max-width: 420px;
+}
+
+.points-list-close {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #cbd5e1;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.points-list-close:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.points-list-cards {
+  display: grid;
+  gap: 1rem;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+.points-list-empty {
+  color: #cbd5e1;
+  padding: 1.75rem 1rem;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  text-align: center;
+}
+
+.points-list-card {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem 1.1rem;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.points-list-card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.points-list-card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.points-list-card-coords {
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+.points-list-card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.points-list-card-actions button,
+.points-list-card-actions .button,
+.points-list-card-actions .button-destructive {
+  min-width: 100px;
+  width: auto;
+  padding: 0.65rem 0.9rem;
+  font-size: 0.9rem;
+  border-radius: 14px;
+  border: none;
+  box-shadow: none;
+}
+
+.points-list-card-actions .button {
+  background: rgba(255, 255, 255, 0.12);
+  color: #f8fafc;
+}
+
+.points-list-card-actions .button:hover,
+.points-list-card-actions button:hover {
+  transform: translateY(-1px);
+}
+
+.points-list-card-actions .button-destructive {
+  background: #dc2626;
+  color: #fff;
+  font-weight: 700;
+}
+
+.points-list-card-actions .button-destructive:hover {
+  background: #b91c1c;
+}
+
 .button-secondary {
   background: rgba(255, 255, 255, 0.08);
   color: #e2e8f0;
@@ -248,17 +396,6 @@
 
 .button-secondary:hover {
   background: rgba(255, 255, 255, 0.14);
-  transform: translateY(-1px);
-}
-
-.button-destructive {
-  background: #dc2626;
-  color: #fff;
-  width: 142px;
-}
-
-.button-destructive:hover {
-  background: #b91c1c;
   transform: translateY(-1px);
 }
 
