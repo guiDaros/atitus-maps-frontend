@@ -28,3 +28,44 @@
     opacity: 1;
     font-weight: bold;
 }
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-field-wrapper {
+    position: relative;
+}
+
+.input-field-wrapper.has-suffix .input {
+    padding-right: 4.5rem;
+}
+
+.input-suffix {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+}
+
+.input-suffix .password-toggle-button {
+    background: transparent;
+    border: none;
+    color: #0f4c81;
+    cursor: pointer;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: 1.1rem;
+    transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.input-suffix .password-toggle-button:hover {
+    color: #1d6fa3;
+    transform: scale(1.05);
+}

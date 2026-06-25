@@ -2,12 +2,14 @@ import React, { useState, useRef, useEffect } from "react";
 import { Navbar, Logo, Title, Input, Button } from "../components";
 import { signIn } from "../services/authService";
 import { Link, useNavigate } from "react-router-dom";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useAuth } from "../contexts/AuthContext";
 import "./login.css";
 
 export function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [showSenha, setShowSenha] = useState(false);
   const [loading, setLoading] = useState(false);
   const [feedback, setFeedback] = useState({ type: "", text: "", visible: false });
   const feedbackTimer = useRef(null);
@@ -79,11 +81,21 @@ export function Login() {
               <Input
                 // label="Senha"
                 placeholder="Senha"
-                type="password"
+                type={showSenha ? 'text' : 'password'}
                 required
                 value={senha}
                 onChange={(e) => setSenha(e.target.value)}
                 disabled={loading}
+                suffix={
+                  <button
+                    type="button"
+                    className="password-toggle-button"
+                    onClick={() => setShowSenha((prev) => !prev)}
+                    aria-label={showSenha ? 'Ocultar senha' : 'Mostrar senha'}
+                  >
+                    {showSenha ? <FaEyeSlash /> : <FaEye />}
+                  </button>
+                }
               />
             </div>
 

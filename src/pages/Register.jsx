@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Navbar, Logo, Title, Input, Button } from "../components";
 import { Link, useNavigate } from "react-router-dom";
 import { signUp } from "../services/authService";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useAuth } from "../contexts/AuthContext";
 import "./login.css";
 
@@ -10,6 +11,8 @@ export function Register() {
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
     const [confirmSenha, setConfirmSenha] = useState("");
+    const [showSenha, setShowSenha] = useState(false);
+    const [showConfirmSenha, setShowConfirmSenha] = useState(false);
     const [loading, setLoading] = useState(false);
     const [feedback, setFeedback] = useState({ type: "", text: "", visible: false });
     const feedbackTimer = useRef(null);
@@ -102,22 +105,42 @@ export function Register() {
                             <Input
                                 // label="Senha"
                                 placeholder="Digite sua senha..."
-                                type="password"
+                                type={showSenha ? 'text' : 'password'}
                                 required
                                 value={senha}
                                 onChange={e => setSenha(e.target.value)}
                                 disabled={loading}
+                                suffix={
+                                    <button
+                                        type="button"
+                                        className="password-toggle-button"
+                                        onClick={() => setShowSenha((prev) => !prev)}
+                                        aria-label={showSenha ? 'Ocultar senha' : 'Mostrar senha'}
+                                    >
+                                        {showSenha ? <FaEyeSlash /> : <FaEye />}
+                                    </button>
+                                }
                             />
                         </div>
                         <div className="pb-4">
                             <Input
                                 // label="Confirmar senha"
                                 placeholder="Confirme sua senha..."
-                                type="password"
+                                type={showConfirmSenha ? 'text' : 'password'}
                                 required
                                 value={confirmSenha}
                                 onChange={e => setConfirmSenha(e.target.value)}
                                 disabled={loading}
+                                suffix={
+                                    <button
+                                        type="button"
+                                        className="password-toggle-button"
+                                        onClick={() => setShowConfirmSenha((prev) => !prev)}
+                                        aria-label={showConfirmSenha ? 'Ocultar senha' : 'Mostrar senha'}
+                                    >
+                                        {showConfirmSenha ? <FaEyeSlash /> : <FaEye />}
+                                    </button>
+                                }
                             />
                         </div>
 
