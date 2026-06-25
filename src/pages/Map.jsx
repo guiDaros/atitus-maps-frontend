@@ -5,6 +5,7 @@ import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import { getPoints, postPoint, putPoint, deletePoint } from '../services/mapService';
 import { useAuth } from "../contexts/AuthContext";
 import { Button } from '../components';
+import { FaCheckCircle } from 'react-icons/fa';
 import './map.css';
 
 const containerStyle = {
@@ -173,7 +174,10 @@ export const Map = () => {
         <div className="settings-overlay" onClick={handleCloseSettings}>
           <div className="settings-panel" onClick={(e) => e.stopPropagation()}>
             <div className="settings-header">
-              <h3>Minha conta</h3>
+              <div>
+                <h3>Configurações</h3>
+                <p className="settings-header-subtitle">Veja seus dados e status da conta</p>
+              </div>
               <button
                 className="settings-close"
                 type="button"
@@ -184,14 +188,31 @@ export const Map = () => {
               </button>
             </div>
 
-            <div className="settings-field">
-              <span className="settings-label">Nome</span>
-              <strong>{userName || 'Usuário'}</strong>
+            <div className="settings-profile">
+              <div className="settings-avatar">
+                {userName ? userName.trim().charAt(0).toUpperCase() : 'U'}
+              </div>
+              <div className="settings-profile-info">
+                <span className="profile-name">{userName || 'Usuário'}</span>
+                <span className="profile-role">Usuário</span>
+              </div>
             </div>
 
-            <div className="settings-field">
-              <span className="settings-label">Status</span>
-              <span>Autenticado</span>
+            <div className="settings-cards">
+              <div className="settings-card">
+                <div className="settings-card-icon status-icon">
+                  <FaCheckCircle />
+                </div>
+                <div>
+                  <span className="settings-card-label">Status da Conta</span>
+                  <p className="settings-card-value">
+                    <span className="status-badge">
+                      <FaCheckCircle className="status-badge-icon" />
+                      Autenticado
+                    </span>
+                  </p>
+                </div>
+              </div>
             </div>
 
             <div className="settings-actions">
