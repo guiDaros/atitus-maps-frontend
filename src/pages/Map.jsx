@@ -25,6 +25,7 @@ export const Map = () => {
   const { token, userName, logout } = useAuth();
   const [markers, setMarkers] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [editPoint, setEditPoint] = useState(null);
   const [pendingPoint, setPendingPoint] = useState(null);
   const [descriptionText, setDescriptionText] = useState("");
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -83,32 +84,38 @@ export const Map = () => {
       setMarkers((prev) => [...prev, savedMarker]);
       setModalVisible(false);
       setPendingPoint(null);
+      setDescriptionText("");
     } catch (error) {
       alert(error.message);
     }
   };
 
-
-  const handleMarkerClick = async (marker) => {
-    const newDescription = window.prompt("Editar descrição do ponto:", marker.title);
-    if (!newDescription || newDescription.trim() === marker.title) {
-      return;
-    }
-
+  const handleSaveEdit = async () => {
+    if (!editPoint) return;
+    const updatedData = {
+      description: descriptionText || "",
+      latitude: editPoint.position.lat,
+      longitude: editPoint.position.lng,
+    };
     try {
-      const updatedPoint = await putPoint(token, marker.id, {
-        description: newDescription,
-        latitude: marker.position.lat,
-        longitude: marker.position.lng,
-      });
-
-      setMarkers((prev) => prev.map((item) => item.id === marker.id ? {
+      const updatedPoint = await putPoint(token, editPoint.id, updatedData);
+      setMarkers((prev) => prev.map((item) => item.id === editPoint.id ? {
         ...item,
-        title: updatedPoint.description || newDescription,
+        title: updatedPoint.description || descriptionText || 'Novo Ponto',
       } : item));
+      setModalVisible(false);
+      setEditPoint(null);
+      setDescriptionText("");
     } catch (error) {
       alert(error.message);
     }
+  };
+
+  const handleMarkerClick = (marker) => {
+    setEditPoint(marker);
+    setPendingPoint(null);
+    setDescriptionText(marker.title === 'Novo Ponto' ? '' : marker.title || '');
+    setModalVisible(true);
   };
 
   const handleMarkerRightClick = async (marker) => {
@@ -154,8 +161,12 @@ export const Map = () => {
       {modalVisible && (
         <div className="modal-overlay">
           <div className="modal-box">
-            <h3 className="modal-title">Descrição do ponto</h3>
-            <p className="modal-sub">Adicione uma descrição (máx. 100 caracteres)</p>
+            <h3 className="modal-title">{editPoint ? 'Editar ponto' : 'Descrição do ponto'}</h3>
+            <p className="modal-sub">
+              {editPoint
+                ? 'Atualize a descrição do ponto existente.'
+                : 'Adicione uma descrição (máx. 100 caracteres)'}
+            </p>
             <textarea
               className="modal-textarea"
               maxLength={100}
@@ -164,8 +175,10 @@ export const Map = () => {
               placeholder="Digite a descrição..."
             />
             <div className="modal-actions">
-              <Button onClick={handleAddDescription}>Adicionar</Button>
-              <Button onClick={() => { setModalVisible(false); setPendingPoint(null); }}>Cancelar</Button>
+              <Button onClick={editPoint ? handleSaveEdit : handleAddDescription}>
+                {editPoint ? 'Salvar alterações' : 'Adicionar'}
+              </Button>
+              <Button onClick={() => { setModalVisible(false); setPendingPoint(null); setEditPoint(null); setDescriptionText(""); }}>Cancelar</Button>
             </div>
           </div>
         </div>
